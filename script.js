@@ -223,7 +223,12 @@ function setupEventListeners() {
 }
 
 function navigate(direction) {
-    state.currentIndex = (state.currentIndex + direction + state.images.length) % state.images.length;
+    const newIndex = state.currentIndex + direction;
+    
+    // Проверка границ
+    if (newIndex < 0 || newIndex >= state.images.length) return;
+    
+    state.currentIndex = newIndex;
     updateModal();
 }
 
