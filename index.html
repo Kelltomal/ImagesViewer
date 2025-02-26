@@ -24,18 +24,16 @@
 
     <!-- Modal Window -->
     <div id="image-modal" class="modal">
-        <div class="modal-content">
-            <button class="nav-btn prev" onclick="navigate(-1)">←</button>
-            <img class="modal-img" id="modal-image" alt="Просмотр изображения">
-            <button class="nav-btn next" onclick="navigate(1)">→</button>
-        </div>
+    <div class="modal-content">
         <div class="modal-footer">
             <span class="image-counter" id="modal-counter"></span>
-            <button class="metro-button" onclick="closeModal()">
-                ✕
-            </button>
+            <button class="modal-close-btn" onclick="closeModal()">✕</button>
         </div>
+        <button class="nav-btn prev">←</button>
+        <img class="modal-img" id="modal-image">
+        <button class="nav-btn next">→</button>
     </div>
+</div>
 
     <!-- Controls Panel -->
     <section class="controls-panel">
