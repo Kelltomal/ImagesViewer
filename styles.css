@@ -1,90 +1,189 @@
-/* Base Styles */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
+/* Windows 8 Modern UI Style */
+:root {
+    --primary-color: #0078D7;
+    --dark-accent: #005A9E;
+    --light-accent: #EFF6FC;
+    --text-color: #1F1F1F;
 }
 
+body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    margin: 0;
+    background: #f0f0f0;
+    color: var(--text-color);
+}
+
+/* Windows-style Header */
 header {
+    background: var(--primary-color);
+    color: white;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
 }
 
-.tooltip {
-    position: relative;
-    margin-left: 15px;
+h1 {
+    font-weight: 300;
+    font-size: 2.2rem;
+    margin: 0;
+    letter-spacing: -0.5px;
 }
 
-.tooltiptext {
-    visibility: hidden;
-    background: #333;
-    color: #fff;
-    padding: 5px;
-    border-radius: 4px;
-    position: absolute;
-    z-index: 1;
-}
-
-.tooltip:hover .tooltiptext {
-    visibility: visible;
-}
-
-/* Gallery */
+/* Metro-inspired Gallery Grid */
 #gallery-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
 }
 
 .gallery-img {
     width: 100%;
-    height: 200px;
+    height: 250px;
     object-fit: cover;
+    border: none;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
-    border: 2px solid #ddd;
+    position: relative;
 }
 
-/* Modal */
+.gallery-img:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.image-counter {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 6px 12px;
+    font-size: 0.9rem;
+}
+
+/* Modern Modal */
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.85);
 }
 
 .modal-content {
-    max-width: 90%;
+    max-width: 80%;
     max-height: 80vh;
-    margin: 5% auto;
-    display: block;
+    border: 2px solid white;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
 }
 
 .nav-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 2em;
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
+    background: var(--primary-color);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.9;
+    transition: opacity 0.2s;
 }
 
-.prev { left: 20px; }
-.next { right: 20px; }
+.nav-btn:hover {
+    opacity: 1;
+}
 
-/* Responsive */
+/* Metro-style Controls */
+.controls {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.controls button {
+    background: var(--primary-color);
+    border: none;
+    color: white;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: transform 0.2s, background 0.2s;
+}
+
+.controls button:hover {
+    background: var(--dark-accent);
+    transform: scale(1.1);
+}
+
+/* Windows 8 Panel */
+.panel {
+    background: white;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+    position: fixed;
+    right: -350px;
+    top: 0;
+    height: 100vh;
+    width: 320px;
+    transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.panel.active {
+    right: 0;
+}
+
+/* Product Info Style */
+#product-info {
+    background: white;
+    margin: 1rem;
+    padding: 1.5rem;
+    font-size: 1.4rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-left: 4px solid var(--primary-color);
+}
+
+/* Windows-style Footer */
+footer {
+    background: var(--primary-color);
+    color: white;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+footer p {
+    margin: 0;
+    opacity: 0.8;
+}
+
+/* Metro Animations */
+@keyframes tileIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.gallery-img {
+    animation: tileIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Mobile Optimization */
 @media (max-width: 768px) {
-    .gallery-img {
-        height: 150px;
+    #gallery-container {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     }
     
-    .modal-content {
-        max-width: 95%;
+    .gallery-img {
+        height: 180px;
+    }
+    
+    .controls {
+        bottom: 1rem;
+        right: 1rem;
     }
 }
