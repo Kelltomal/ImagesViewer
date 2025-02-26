@@ -45,8 +45,14 @@ function renderAll() {
 }
 
 function renderHeader() {
-    dom.productInfo.textContent = [state.art, state.name]
-        .filter(Boolean).join(' - ');
+    if (state.art === "" && state.name === "") {
+        dom.productInfo.style.display = 'none';
+    } else {
+        dom.productInfo.style.display = 'block';
+        dom.productInfo.textContent = [state.art, state.name]
+            .filter(Boolean)
+            .join(' - ');
+    }
 }
 
 // Добавим проверку URL изображений
