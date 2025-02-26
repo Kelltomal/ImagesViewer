@@ -106,11 +106,11 @@ h1 {
     box-shadow: 0 8px 24px rgba(0,0,0,0.15);
 }
 
+/* Гарантируем правильное отображение изображений */
 .gallery-img {
     width: 100%;
     height: 280px;
     object-fit: cover;
-    cursor: pointer;
     display: block;
     background: #f0f0f0;
     transition: transform 0.3s var(--transition);
@@ -308,6 +308,15 @@ footer p {
     max-width: 800px;
     margin: 0 auto;
     opacity: 0.9;
+}
+
+/* Стили для сообщения об отсутствии изображений */
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+    font-size: 1.2rem;
+    grid-column: 1 / -1;
 }
 
 /* Animations */
