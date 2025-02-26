@@ -170,7 +170,8 @@ function updateGallery() {
         .split(/[,\n]/)
         .map(url => url.trim())
         .filter(url => url);
-    state.name = dom.
+    state.name = dom.nameInput.value
+    state.art = dom.artInput.value
     updateUrl();
     renderAll();
 }
