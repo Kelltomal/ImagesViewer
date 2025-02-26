@@ -3,387 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Галерея изображений</title>
-    <style>
-        :root {
-            --bg-color: #ffffff;
-            --text-color: #333333;
-            --thumb-size: 300px;
-            --gap-size: 15px;
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg-color: #1a1a1a;
-                --text-color: #ffffff;
-            }
-        }
-
-        body {
-            background: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-            font-family: Arial, sans-serif;
-        }
-
-        .header {
-            text-align: center;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .title {
-            font-size: 24px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .controls {
-            padding: 20px;
-            background: #f8f8f8;
-            margin: 20px;
-            border-radius: 8px;
-        }
-
-        .url-input {
-            width: 100%;
-            height: 100px;
-            margin: 10px 0;
-            padding: 10px;
-            font-family: monospace;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        .button {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin: 5px;
-            transition: opacity 0.3s;
-        }
-
-        .button:hover {
-            opacity: 0.8;
-        }
-
-        .image-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            padding: 20px;
-            justify-content: center;
-        }
-
-        .img-wrapper {
-            position: relative;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-
-        .img-item {
-            max-width: 300px;
-            height: auto;
-            border: 2px solid #ddd;
-            border-radius: 4px;
-            object-fit: cover;
-        }
-
-        .number-label {
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 3px;
-            font-size: 14px;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.3);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .modal-content {
-            position: relative;
-            max-width: 90%;
-            max-height: 90%;
-            background: rgba(0,0,0,0.7);
-            border-radius: 8px;
-            padding: 20px;
-        }
-
-        .modal-img {
-            max-width: 100%;
-            max-height: 80vh;
-            object-fit: contain;
-        }
-
-        .modal-counter {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: white;
-            font-size: 18px;
-            background: rgba(0,0,0,0.5);
-            padding: 5px 15px;
-            border-radius: 20px;
-        }
-
-        .nav-button {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255,255,255,0.3);
-            border: none;
-            color: white;
-            font-size: 24px;
-            padding: 15px;
-            cursor: pointer;
-            border-radius: 50%;
-        }
-
-        .prev { left: 20px; }
-        .next { right: 20px; }
-
-        .settings-panel {
-            position: fixed;
-            top: 20px;
-            right: -300px;
-            width: 280px;
-            background: rgba(255,255,255,0.95);
-            color: #333;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
-            transition: right 0.3s;
-            z-index: 2000;
-        }
-
-        .settings-open {
-            right: 20px;
-        }
-
-        .settings-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #28a745;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 25px;
-            cursor: pointer;
-            z-index: 2000;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .draggable {
-            cursor: move;
-            transition: transform 0.3s;
-        }
-
-        .dragging {
-            opacity: 0.5;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            color: #666;
-            font-size: 12px;
-            padding: 20px;
-            border-top: 1px solid #eee;
-        }
-
-        @media (max-width: 768px) {
-            .img-item {
-                max-width: 100% !important;
-            }
-            
-            .modal-content {
-                padding: 10px;
-            }
-            
-            .nav-button {
-                font-size: 18px;
-                padding: 10px;
-            }
-        }
-    </style>
+    <title>Gallery Viewer</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <button class="settings-toggle" onclick="toggleSettings()">⚙️ Настройки</button>
-
-    <div class="settings-panel" id="settingsPanel">
-        <h3>Настройки страницы</h3>
-        <label>
-            Название товара:
-            <input type="text" id="productName" class="url-input">
-        </label>
-        <label>
-            Артикул:
-            <input type="text" id="productArt" class="url-input">
-        </label>
-    </div>
-
-    <div class="header" id="header"></div>
-    
-    <div class="controls">
-        <textarea class="url-input" id="imageUrls" 
-                  placeholder="Введите URL изображений через запятую или с новой строки..."></textarea>
-        <button class="button" onclick="updateGallery()">Обновить галерею</button>
-        <button class="button" onclick="copyUrl()">Поделиться ссылкой</button>
-    </div>
-
-    <div class="image-container" id="container"></div>
-
-    <div class="modal" id="modal">
-        <div class="modal-counter" id="modalCounter"></div>
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <button class="nav-button prev" onclick="changeImage(-1)">❮</button>
-            <img class="modal-img" id="modalImage">
-            <button class="nav-button next" onclick="changeImage(1)">❯</button>
+    <!-- Header Section -->
+    <header>
+        <h1>Галерея товаров</h1>
+        <div class="tooltip">ℹ️
+            <span class="tooltiptext">Функционал: Листание фото, настройки, обмен ссылками</span>
         </div>
+    </header>
+
+    <!-- Product Info -->
+    <section id="product-info"></section>
+
+    <!-- Gallery -->
+    <section id="gallery-container"></section>
+
+    <!-- Modal -->
+    <div id="image-modal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modal-image">
+        <button class="nav-btn prev">←</button>
+        <button class="nav-btn next">→</button>
     </div>
 
-    <div class="footer">
-        Сайт создал Kelltomal Племянников Д.В. для личного использования.<br>
-        Назначение: обмен фотографиями с друзьями и коллегами.<br>
-        Запрещено коммерческое использование. Только личные цели.
+    <!-- Controls -->
+    <div class="controls">
+        <button id="settings-btn">⚙️</button>
+        <button id="share-btn">🔗</button>
     </div>
 
-    <script>
-        let currentImages = [];
-        let currentIndex = 0;
-        let isDragging = false;
-        let dragItem = null;
-        let isSettingsOpen = false;
+    <!-- Settings Panel -->
+    <div id="settings-panel" class="panel">
+        <div id="image-list"></div>
+        <input type="text" id="new-image-url" placeholder="Добавить URL изображения">
+        <button id="add-image">+</button>
+    </div>
 
-        function init() {
-            const urlParams = new URLSearchParams(window.location.search);
-            currentImages = urlParams.get('images')?.split(/[,\n]/).filter(url => url.trim()) || [];
-            document.getElementById('imageUrls').value = currentImages.join('\n');
-            document.getElementById('productName').value = urlParams.get('name') || '';
-            document.getElementById('productArt').value = urlParams.get('art') || '';
-            updateHeader();
-            renderGallery();
-        }
+    <!-- Footer -->
+    <footer>
+        <p>Сайт создал Племянников Д.В (Kelltomal) для личного использования. 
+           Запрещено коммерческое использование.</p>
+    </footer>
 
-        function updateHeader() {
-            const header = document.getElementById('header');
-            const name = document.getElementById('productName').value;
-            const art = document.getElementById('productArt').value;
-            header.innerHTML = '';
-
-            if (name || art) {
-                const title = document.createElement('div');
-                title.className = 'title';
-                title.textContent = [art, name].filter(Boolean).join(' - ');
-                header.appendChild(title);
-            }
-        }
-
-        function renderGallery() {
-            const container = document.getElementById('container');
-            container.innerHTML = '';
-
-            currentImages.forEach((url, index) => {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'img-wrapper' + (isSettingsOpen ? ' draggable' : '');
-                wrapper.draggable = isSettingsOpen;
-                wrapper.ondragstart = e => isSettingsOpen && dragStart(e, index);
-                wrapper.ondragover = e => isSettingsOpen && e.preventDefault();
-                wrapper.ondrop = e => isSettingsOpen && dragDrop(e, index);
-
-                const img = document.createElement('img');
-                img.src = url;
-                img.className = 'img-item';
-                img.onclick = () => openModal(index);
-
-                const number = document.createElement('div');
-                number.className = 'number-label';
-                number.textContent = `${index + 1}/${currentImages.length}`;
-
-                wrapper.appendChild(img);
-                wrapper.appendChild(number);
-                container.appendChild(wrapper);
-            });
-        }
-
-        function dragStart(e, index) {
-            isDragging = true;
-            dragItem = currentImages[index];
-            e.target.classList.add('dragging');
-        }
-
-        function dragDrop(e, newIndex) {
-            if (!isDragging) return;
-            const oldIndex = currentImages.indexOf(dragItem);
-            currentImages.splice(oldIndex, 1);
-            currentImages.splice(newIndex, 0, dragItem);
-            renderGallery();
-            updateUrl();
-            isDragging = false;
-        }
-
-        function openModal(index) {
-            currentIndex = index;
-            document.getElementById('modal').style.display = 'flex';
-            updateModal();
-        }
-
-        function updateModal() {
-            const modalImg = document.getElementById('modalImage');
-            modalImg.src = currentImages[currentIndex];
-            document.getElementById('modalCounter').textContent = 
-                `${currentIndex + 1}/${currentImages.length}`;
-        }
-
-        function changeImage(direction) {
-            currentIndex = (currentIndex + direction + currentImages.length) % currentImages.length;
-            updateModal();
-        }
-
-        function closeModal() {
-            document.getElementById('modal').style.display = 'none';
-        }
-
-        document.getElementById('modal').addEventListener('click', e => {
-            if (e.target === document.getElementById('modal')) closeModal();
-        });
-
-        document.addEventListener('keydown', e => {
-            if (document.getElementById('modal').style.display === 'flex') {
-                if (e.key === 'ArrowLeft') changeImage(-1);
-                if (e.key === 'ArrowRight') changeImage(1);
-                if (e.key === 'Escape') closeModal();
-            }
-        });
-
-        function toggleSettings() {
-            isSettingsOpen = !isSettingsOpen;
-            document.getElementById('settingsPanel').classList.toggle('settings-open');
-            renderGallery();
-        }
-
-        function updateGallery() {
-            const input = document.getElementById('imageUrls').value;
-            currentImages = input.split(/[,\n]/).map(url => url.trim()).filter(url => url);
-            updateUrl();
+    <script src="script.js"></script>
+</body>
+</html>
