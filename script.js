@@ -183,6 +183,11 @@ function setupEventListeners() {
         });
     }
 
+        // Двойной клик для зума
+    dom.modal.addEventListener('dblclick', function() {
+        this.classList.toggle('zoomed');
+    });
+
     // Модальное окно
     if (dom.modal) {
         dom.modal.addEventListener('click', e => {
@@ -196,6 +201,11 @@ function setupEventListeners() {
             if (e.key === 'ArrowRight') navigate(1);
             if (e.key === 'Escape') closeModal();
         }
+    });
+
+        // Ресайз окна
+    window.addEventListener('resize', function() {
+        dom.modal.classList.remove('zoomed');
     });
 
     // Swipe detection
