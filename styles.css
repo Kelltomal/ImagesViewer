@@ -177,13 +177,13 @@ h1 {
 
 .modal-header {
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: -10px;
+    right: -80px;
     display: flex;
     gap: 15px;
     align-items: center;
     z-index: 1001;
-    background: rgba(0,0,0,0.7);
+    background: var(--primary-color);
     padding: 8px 15px;
     border-radius: 25px;
     backdrop-filter: blur(4px);
@@ -273,6 +273,7 @@ h1 {
     background: rgba(0, 0, 0, 0.7);
     padding: 8px;
     border-radius: 50%;
+    border-width: 0px;
     width: 40px;
     height: 40px;
     display: flex;
