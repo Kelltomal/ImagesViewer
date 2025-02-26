@@ -137,7 +137,7 @@ function closeModal() {
 
 function updateModal() {
     const currentImage = state.images[state.currentIndex];
-    dom.modal.classList.remove('zoomed');
+    dom.modalImage.classList.remove('zoomed');
     
     if (!currentImage) {
         console.error('Текущее изображение не найдено');
@@ -186,7 +186,7 @@ function setupEventListeners() {
     }
 
         // Двойной клик для зума
-    dom.modal.addEventListener('dblclick', function() {
+    dom.modalImage.addEventListener('dblclick', function() {
         this.classList.toggle('zoomed');
     });
 
@@ -194,7 +194,7 @@ function setupEventListeners() {
     if (dom.modal) {
         dom.modal.addEventListener('click', e => {
             if (e.target === dom.modal) {
-                dom.modal.classList.remove('zoomed');
+                dom.modalImage.classList.remove('zoomed');
                 closeModal();
             }
         });
@@ -210,7 +210,7 @@ function setupEventListeners() {
 
         // Ресайз окна
     window.addEventListener('resize', function() {
-        dom.modal.classList.remove('zoomed');
+        dom.modalImage.classList.remove('zoomed');
     });
 
     // Swipe detection
@@ -239,7 +239,7 @@ function setupEventListeners() {
 
 function navigate(direction) {
     const newIndex = state.currentIndex + direction;
-    dom.modal.classList.remove('zoomed');
+    dom.modalImage.classList.remove('zoomed');
     // Проверка границ
     if (newIndex < 0 || newIndex >= state.images.length) return;
     
