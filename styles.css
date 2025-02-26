@@ -239,11 +239,11 @@ h1 {
 }
 
 .prev {
-    left: 5px;
+    left: -5px;
 }
 
 .next {
-    right: 5px;
+    right: -5px;
 }
 
 .prev::before {
