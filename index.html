@@ -203,6 +203,15 @@
             opacity: 0.5;
         }
 
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #666;
+            font-size: 12px;
+            padding: 20px;
+            border-top: 1px solid #eee;
+        }
+
         @media (max-width: 768px) {
             .img-item {
                 max-width: 100% !important;
@@ -232,10 +241,6 @@
             Артикул:
             <input type="text" id="productArt" class="url-input">
         </label>
-        <div style="margin-top: 20px; display: flex; gap: 10px;">
-            <button class="button" onclick="saveSettings()">Сохранить</button>
-            <button class="button" onclick="toggleSettings()">Отменить</button>
-        </div>
     </div>
 
     <div class="header" id="header"></div>
@@ -258,15 +263,22 @@
         </div>
     </div>
 
+    <div class="footer">
+        Сайт создал Kelltomal Племянников Д.В. для личного использования.<br>
+        Назначение: обмен фотографиями с друзьями и коллегами.<br>
+        Запрещено коммерческое использование. Только личные цели.
+    </div>
+
     <script>
         let currentImages = [];
         let currentIndex = 0;
         let isDragging = false;
         let dragItem = null;
+        let isSettingsOpen = false;
 
         function init() {
             const urlParams = new URLSearchParams(window.location.search);
-            currentImages = urlParams.get('images')?.split(',').filter(url => url.trim()) || [];
+            currentImages = urlParams.get('images')?.split(/[,\n]/).filter(url => url.trim()) || [];
             document.getElementById('imageUrls').value = currentImages.join('\n');
             document.getElementById('productName').value = urlParams.get('name') || '';
             document.getElementById('productArt').value = urlParams.get('art') || '';
@@ -294,11 +306,11 @@
 
             currentImages.forEach((url, index) => {
                 const wrapper = document.createElement('div');
-                wrapper.className = 'img-wrapper draggable';
-                wrapper.draggable = true;
-                wrapper.ondragstart = e => dragStart(e, index);
-                wrapper.ondragover = e => e.preventDefault();
-                wrapper.ondrop = e => dragDrop(e, index);
+                wrapper.className = 'img-wrapper' + (isSettingsOpen ? ' draggable' : '');
+                wrapper.draggable = isSettingsOpen;
+                wrapper.ondragstart = e => isSettingsOpen && dragStart(e, index);
+                wrapper.ondragover = e => isSettingsOpen && e.preventDefault();
+                wrapper.ondrop = e => isSettingsOpen && dragDrop(e, index);
 
                 const img = document.createElement('img');
                 img.src = url;
@@ -366,19 +378,12 @@
         });
 
         function toggleSettings() {
+            isSettingsOpen = !isSettingsOpen;
             document.getElementById('settingsPanel').classList.toggle('settings-open');
+            renderGallery();
         }
 
-        function saveSettings() {
-            const name = document.getElementById('productName').value;
-            const art = document.getElementById('productArt').value;
-            const params = new URLSearchParams();
-            
-            if (currentImages.length) params.set('images', currentImages.join(','));
-            if (name) params.set('name', name);
-            if (art) params.set('art', art);
-            
-            history.replaceState(null, '', '?' + params.toString());
-            updateHeader();
-            toggleSettings();
-        }
+        function updateGallery() {
+            const input = document.getElementById('imageUrls').value;
+            currentImages = input.split(/[,\n]/).map(url => url.trim()).filter(url => url);
+            updateUrl();
