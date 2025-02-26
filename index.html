@@ -3,49 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Gallery Viewer</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Галерея товаров</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Header Section -->
+    <!-- Windows-style Header -->
     <header>
-        <h1>Галерея товаров</h1>
-        <div class="tooltip">ℹ️
-            <span class="tooltiptext">Просмотр фотографий товаров с возможностью настройки и совместного использования</span>
+        <h1>Метро Галерея</h1>
+        <div class="tooltip">
+            ℹ️
+            <span class="tooltiptext">Листайте фото ←→, настройки ⚙️, делитесь 🔗</span>
         </div>
     </header>
 
     <!-- Product Info -->
-    <section id="product-info"></section>
+    <section id="product-info" class="product-header"></section>
 
     <!-- Gallery Grid -->
-    <main id="gallery"></main>
+    <section id="gallery-container" class="metro-grid"></section>
 
-    <!-- Image Modal -->
+    <!-- Modal Window -->
     <div id="image-modal" class="modal">
-        <span class="close">&times;</span>
-        <img class="modal-content" id="modal-image">
-        <div class="modal-nav">
-            <button id="prev">&#10094;</button>
-            <button id="next">&#10095;</button>
+        <div class="modal-content">
+            <button class="nav-btn prev mif-chevron-left"></button>
+            <img class="modal-img" id="modal-image" alt="Просмотр изображения">
+            <button class="nav-btn next mif-chevron-right"></button>
+        </div>
+        <div class="modal-footer">
+            <span class="image-counter" id="modal-counter"></span>
+            <button class="metro-button" onclick="closeModal()">
+                ✕
+            </button>
         </div>
     </div>
+
+    <!-- Controls Panel -->
+    <section class="controls-panel">
+        <textarea class="metro-input" id="imageUrls" 
+                  placeholder="Введите URL изображений через запятую или каждое с новой строки"></textarea>
+        <div class="button-group">
+            <button class="metro-button primary" onclick="updateGallery()">
+                🔄 Обновить
+            </button>
+            <button class="metro-button success" onclick="copyUrl()">
+                📤 Поделиться
+            </button>
+        </div>
+    </section>
 
     <!-- Settings Panel -->
-    <div id="settings-panel">
-        <button id="settings-btn">⚙️</button>
-        <div class="settings-content">
-            <div id="image-order"></div>
-            <div class="add-image">
-                <input type="text" id="new-image-url" placeholder="Введите URL изображения">
-                <button id="add-image">+</button>
-            </div>
-        </div>
+    <div id="settings-panel" class="settings-panel">
+        <h3>⚙️ Настройки галереи</h3>
+        <div id="image-list" class="image-list"></div>
+        <input type="text" 
+               id="new-image-url" 
+               class="metro-input" 
+               placeholder="Добавить новое изображение по URL">
+        <button class="metro-button" id="add-image">
+            ➕ Добавить
+        </button>
     </div>
 
-    <!-- Footer -->
+    <!-- Windows-style Footer -->
     <footer>
-        <p>Сайт создал Kelltomal Племянников Д.В для использования в личных нуждах. Не разрешено использовать в коммерческих целях.</p>
+        <p>Сайт создал Kelltomal Племянников Д.В. для некоммерческого использования.<br>
+        Разрешено использование только в личных целях.<br>
+        Запрещено копирование и распространение без разрешения.</p>
     </footer>
 
     <script src="script.js"></script>
