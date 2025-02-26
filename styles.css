@@ -268,10 +268,6 @@ h1 {
     backdrop-filter: blur(4px);
 }
 
-$line-height: 8px;
-$line-height-hover: 15px;
-$line-transition: all .2s cubic-bezier(.25,.46,.45,.94);
-
 .modal-close-btn {
     order: 1; /* Кнопка всегда сверху */
     background: rgba(0, 0, 0, 0.7);
@@ -284,42 +280,6 @@ $line-transition: all .2s cubic-bezier(.25,.46,.45,.94);
     justify-content: center;
     backdrop-filter: blur(4px);
     transition: all 0.3s;
-
-    &:hover{
-        &:before{
-          width: $line-height-hover;
-        }
-        
-        &:after{
-          width: $line-height-hover;
-        }
-    }
-      
-      &:before{
-        content: '';
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        width: 0;
-        height: 1px;
-        border-left: $line-height solid currentColor;
-        border-right: $line-height solid currentColor;
-        -webkit-transform: translate3d(-50%,-50%,0) rotate(-45deg);
-        transition: $line-transition;
-      }
-      
-      &:after{
-        content: '';
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        width: 0;
-        height: 1px;
-        border-left: $line-height solid currentColor;
-        border-right: $line-height solid currentColor;
-        -webkit-transform: translate3d(-50%,-50%,0) rotate(45deg);
-        transition: $line-transition;
-      }
 }
 
 /* Controls Section */
