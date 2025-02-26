@@ -1,100 +1,280 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-<style>
-    .image-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        padding: 20px;
-    }
-    
-    .img-item {
-        cursor: pointer;
-        transition: transform 0.3s;
-        max-width: 300px;
-        height: auto;
-    }
-
-    /* Zoom эффект при наведении (для десктопа) */
-    @media (hover: hover) {
-        .img-item:hover {
-            transform: scale(1.5);
-            z-index: 2;
+    <meta charset="UTF-8">
+    <title>Галерея изображений</title>
+    <style>
+        /* Стили для заголовка */
+        .header {
+            text-align: center;
+            padding: 20px;
+            background: #f0f0f0;
+            margin-bottom: 20px;
         }
-    }
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
 
-    /* Модальное окно для зума */
-    .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.9);
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    }
+        /* Стили для управления */
+        .controls {
+            padding: 20px;
+            background: #f8f8f8;
+            margin: 20px;
+            border-radius: 8px;
+        }
+        .url-input {
+            width: 100%;
+            height: 100px;
+            margin: 10px 0;
+            padding: 10px;
+            font-family: monospace;
+        }
+        .button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+            transition: opacity 0.3s;
+        }
+        .button:hover {
+            opacity: 0.8;
+        }
 
-    .modal-img {
-        max-width: 90%;
-        max-height: 90%;
-        object-fit: contain;
-    }
+        /* Стили галереи */
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 20px;
+            justify-content: center;
+        }
+        .img-wrapper {
+            position: relative;
+            transition: transform 0.3s;
+        }
+        .img-item {
+            cursor: pointer;
+            max-width: 300px;
+            height: auto;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+        }
+        .number-label {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 14px;
+        }
 
-    /* Кнопка закрытия */
-    .close {
-        position: absolute;
-        top: 20px;
-        right: 30px;
-        color: white;
-        font-size: 40px;
-        cursor: pointer;
-    }
-</style>
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+        }
+        .modal-img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+        }
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.3);
+            border: none;
+            color: white;
+            font-size: 24px;
+            padding: 15px;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        .prev { left: 20px; }
+        .next { right: 20px; }
+
+        /* Подвал */
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #666;
+            font-size: 12px;
+            padding: 20px;
+            border-top: 1px solid #eee;
+        }
+    </style>
 </head>
 <body>
-<div class="image-container" id="container"></div>
-<div class="modal" id="modal">
-    <span class="close">&times;</span>
-    <img class="modal-img" id="modalImage">
-</div>
+    <!-- Заголовок -->
+    <div class="header" id="header"></div>
+    
+    <!-- Управление -->
+    <div class="controls">
+        <textarea class="url-input" id="imageUrls" 
+                  placeholder="Введите URL изображений через запятую или каждое с новой строки..."></textarea>
+        <button class="button" onclick="updateGallery()">Обновить галерею</button>
+        <button class="button" onclick="copyUrl()">Поделиться ссылкой</button>
+    </div>
+
+    <!-- Галерея -->
+    <div class="image-container" id="container"></div>
+
+    <!-- Модальное окно -->
+    <div class="modal" id="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <button class="nav-button prev" onclick="changeImage(-1)">❮</button>
+            <img class="modal-img" id="modalImage">
+            <button class="nav-button next" onclick="changeImage(1)">❯</button>
+        </div>
+    </div>
+
+    <!-- Подвал -->
+    <div class="footer">
+        Сайт создал Kelltomal Племянников Д.В. для личного использования.<br>
+        Назначение: обмен фотографиями с друзьями и коллегами.<br>
+        Запрещено коммерческое использование. Только личные цели.
+    </div>
 
 <script>
-const urlParams = new URLSearchParams(window.location.search);
-const images = urlParams.get('images')?.split(',') || [];
+let currentImages = [];
+let currentName = '';
+let currentArt = '';
+let currentIndex = 0;
 
-// Создаем изображения
-const container = document.getElementById('container');
-images.forEach(url => {
-    const img = document.createElement('img');
-    img.src = url.trim();
-    img.className = 'img-item';
+// Инициализация
+function init() {
+    const urlParams = new URLSearchParams(window.location.search);
+    currentImages = urlParams.get('images')?.split(',').map(url => url.trim()).filter(url => url) || [];
+    currentName = urlParams.get('name') || '';
+    currentArt = urlParams.get('art') || '';
+
+    document.getElementById('imageUrls').value = currentImages.join('\n');
+    updateHeader();
+    renderGallery();
+}
+
+// Обновление заголовка
+function updateHeader() {
+    const header = document.getElementById('header');
+    header.innerHTML = '';
     
-    // Клик для модального окна
-    img.addEventListener('click', () => {
-        const modal = document.getElementById('modal');
-        const modalImg = document.getElementById('modalImage');
-        modal.style.display = 'flex';
-        modalImg.src = img.src;
+    if (currentName || currentArt) {
+        const title = document.createElement('div');
+        title.className = 'title';
+        title.textContent = [currentArt, currentName].filter(Boolean).join(' - ');
+        header.appendChild(title);
+    }
+}
+
+// Рендер галереи
+function renderGallery() {
+    const container = document.getElementById('container');
+    container.innerHTML = '';
+
+    currentImages.forEach((url, index) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'img-wrapper';
+        
+        const img = document.createElement('img');
+        img.src = url;
+        img.className = 'img-item';
+        img.onclick = () => openModal(index);
+
+        const number = document.createElement('div');
+        number.className = 'number-label';
+        number.textContent = `${index + 1}/${currentImages.length}`;
+
+        wrapper.appendChild(img);
+        wrapper.appendChild(number);
+        container.appendChild(wrapper);
     });
-    
-    container.appendChild(img);
-});
+}
 
-// Закрытие модального окна
-document.querySelector('.close').addEventListener('click', () => {
+// Работа с модальным окном
+let modalImages = [];
+
+function openModal(index) {
+    currentIndex = index;
+    modalImages = currentImages;
+    document.getElementById('modal').style.display = 'flex';
+    updateModalImage();
+}
+
+function closeModal() {
     document.getElementById('modal').style.display = 'none';
-});
+}
 
-// Закрытие по клику вне изображения
-document.getElementById('modal').addEventListener('click', (e) => {
-    if(e.target === document.getElementById('modal')) {
-        document.getElementById('modal').style.display = 'none';
+function changeImage(direction) {
+    currentIndex = (currentIndex + direction + modalImages.length) % modalImages.length;
+    updateModalImage();
+}
+
+function updateModalImage() {
+    document.getElementById('modalImage').src = modalImages[currentIndex];
+}
+
+// Обновление URL
+function updateUrl() {
+    const params = new URLSearchParams();
+    if (currentImages.length) params.set('images', currentImages.join(','));
+    if (currentName) params.set('name', currentName);
+    if (currentArt) params.set('art', currentArt);
+    history.replaceState(null, '', '?' + params.toString());
+}
+
+// Обработчики событий
+document.addEventListener('keydown', (e) => {
+    if (document.getElementById('modal').style.display === 'flex') {
+        if (e.key === 'ArrowLeft') changeImage(-1);
+        if (e.key === 'ArrowRight') changeImage(1);
+        if (e.key === 'Escape') closeModal();
     }
 });
+
+function updateGallery() {
+    const input = document.getElementById('imageUrls').value;
+    currentImages = input.split(/[,\n]/).map(url => url.trim()).filter(url => url);
+    updateUrl();
+    renderGallery();
+}
+
+function copyUrl() {
+    navigator.clipboard.writeText(window.location.href)
+        .then(() => alert('Ссылка скопирована в буфер!'))
+        .catch(() => alert('Не удалось скопировать ссылку'));
+}
+
+// Запуск
+init();
 </script>
 </body>
 </html>
