@@ -138,17 +138,21 @@ h1 {
     background: rgba(0,0,0,0.95);
     backdrop-filter: blur(5px);
     z-index: 1000;
-    justify-content: center;
-    align-items: center;
+    overflow: auto;
 }
 
 .modal-content {
-    max-width: 95%;
-    max-height: 95vh;
-    width: auto;
-    height: auto;
-    margin: 2vh auto;
+    position: relative;
+    max-width: 90%;
+    margin: 2% auto;
+    padding: 20px;
     animation: modalScale 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.image-wrapper {
+    position: relative;
+    overflow: visible;
+    margin: 0 50px;
 }
 
 @keyframes modalScale {
@@ -158,14 +162,32 @@ h1 {
 
 /* Улучшенный зум при клике */
 .modal-img {
-    cursor: zoom-in;
+    max-width: 100%;
+    max-height: 80vh;
+    display: block;
+    margin: 0 auto;
     transition: transform 0.3s;
+    cursor: zoom-in;
 }
 
 .modal-img.zoomed {
     cursor: zoom-out;
     transform: scale(1.5);
     transform-origin: center center;
+}
+
+.modal-header {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    z-index: 1001;
+    background: rgba(0,0,0,0.7);
+    padding: 8px 15px;
+    border-radius: 25px;
+    backdrop-filter: blur(4px);
 }
 
 /* Стили для битых изображений */
@@ -186,25 +208,25 @@ h1 {
 }
 
 .nav-btn {
-    position: absolute;
+    position: fixed;
     top: 50%;
     transform: translateY(-50%);
     background: var(--primary-color);
     border: none;
-    color: white;
     width: 50px;
     height: 50px;
     border-radius: 50%;
     cursor: pointer;
-    opacity: 0.9;
-    transition: all 0.3s var(--transition);
+    font-size: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: all 0.3s;
 }
 
 .nav-btn:hover {
-    opacity: 1;
+    background: white;
     transform: translateY(-50%) scale(1.1);
 }
 
@@ -250,7 +272,7 @@ h1 {
     cursor: pointer;
     padding: 0;
     line-height: 1;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s;
 }
 
 .modal-close-btn:hover {
@@ -439,11 +461,18 @@ footer p {
     }
 }
 
-@media (min-width: 1200px) {
+@media (max-width: 768px) {
     .modal-content {
-        max-width: 1200px;
+        max-width: 95%;
     }
-    .modal-img {
-        max-height: 90vh;
+    
+    .nav-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+    
+    .image-wrapper {
+        margin: 0 30px;
     }
 }
