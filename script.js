@@ -60,51 +60,46 @@ function validateImageUrl(url) {
 
 // Обновленная функция рендеринга галереи
 function renderGallery() {
-    const container = dom.galleryContainer;
-    
-    // Очищаем контейнер
-    container.innerHTML = '';
-    
-    // Добавляем проверку на пустой список
-    if (!state.images || state.images.length === 0) {
-        container.innerHTML = `<div class="empty-state">Нет изображений для отображения</div>`;
-        return;
-    }
+    dom.galleryContainer.innerHTML = state.images
+        .map((url, index) => {
+            if (!isValidUrl(url)) {
+                console.warn('Пропущен некорректный URL:', url);
+                return '';
+            }
+            return `
+                <div class="tile" data-index="${index}">
+                    <img src="${url}" 
+                         class="gallery-img" 
+                         loading="lazy"
+                         alt="Изображение ${index + 1}"
+                         onerror="handleImageError(this)">
+                    <div class="image-counter">${index + 1}/${state.images.length}</div>
+                </div>
+            `;
+        })
+        .join('');
 
-    // Создаем элементы галереи
-    state.images.forEach((url, index) => {
-        if (!validateImageUrl(url)) {
-            console.error(`Некорректный URL изображения: ${url}`);
-            return;
-        }
-
-        const tile = document.createElement('div');
-        tile.className = 'tile';
-        tile.innerHTML = `
-            <img src="${url}" 
-                 class="gallery-img" 
-                 loading="lazy" 
-                 alt="Изображение ${index + 1}"
-                 onerror="this.onerror=null;this.src='https://via.placeholder.com/300x200?text=Ошибка+загрузки';">
-            <div class="image-counter">${index + 1}/${state.images.length}</div>
-        `;
-
-        container.appendChild(tile);
-    });
-
-    // Добавляем обработчики после рендеринга
     addGalleryEventListeners();
 }
 
 // Добавим отдельную функцию для обработчиков событий
 function addGalleryEventListeners() {
-    document.querySelectorAll('.gallery-img').forEach(img => {
-        img.addEventListener('click', function() {
-            const index = Array.from(this.parentNode.parentNode.children)
-                .indexOf(this.parentNode);
+    document.querySelectorAll('.tile').forEach((tile, index) => {
+        tile.addEventListener('click', () => {
+            if (!state.images[index]) {
+                console.error('Изображение не найдено по индексу:', index);
+                return;
+            }
             openModal(index);
         });
     });
+}
+
+function handleImageError(img) {
+    img.src = 'https://via.placeholder.com/300x200?text=Ошибка+загрузки';
+    img.alt = 'Изображение не загружено';
+    img.style.cursor = 'not-allowed';
+    img.parentElement.classList.add('error-tile');
 }
 
 function renderSettingsPanel() {
@@ -113,10 +108,25 @@ function renderSettingsPanel() {
 
 // Modal Control
 function openModal(index) {
+    // Проверка валидности индекса
+    if (index < 0 || index >= state.images.length || !state.images[index]) {
+        console.error('Некорректный индекс изображения:', index);
+        showToast('Ошибка открытия изображения');
+        return;
+    }
+    
+    // Проверка URL изображения
+    const imageUrl = state.images[index];
+    if (!validateImageUrl(imageUrl)) {
+        console.error('Некорректный URL изображения:', imageUrl);
+        showToast('Некорректная ссылка на изображение');
+        return;
+    }
+
     state.currentIndex = index;
     dom.modal.style.display = 'flex';
-    updateModal();
     document.body.style.overflow = 'hidden';
+    updateModal();
 }
 
 function closeModal() {
@@ -125,9 +135,23 @@ function closeModal() {
 }
 
 function updateModal() {
-    dom.modalImage.src = state.images[state.currentIndex];
-    dom.modalCounter.textContent = 
-        `${state.currentIndex + 1}/${state.images.length}`;
+    const currentImage = state.images[state.currentIndex];
+    
+    if (!currentImage) {
+        console.error('Текущее изображение не найдено');
+        dom.modal.style.display = 'none';
+        return;
+    }
+
+    // Добавляем обработчик ошибок загрузки
+    dom.modalImage.onerror = () => {
+        dom.modalImage.src = 'https://via.placeholder.com/800x600?text=Ошибка+загрузки';
+        dom.modalImage.alt = 'Изображение не найдено';
+    };
+
+    dom.modalImage.src = currentImage;
+    dom.modalImage.alt = `Изображение ${state.currentIndex + 1}`;
+    dom.modalCounter.textContent = `${state.currentIndex + 1}/${state.images.length}`;
 }
 
 // Gallery Actions
