@@ -280,12 +280,42 @@ h1 {
     justify-content: center;
     backdrop-filter: blur(4px);
     transition: all 0.3s;
-}
 
-/* Анимации для лучшей видимости */
-.modal-close-btn:hover {
-    transform: scale(1.15) rotate(90deg);
-    background: rgba(255, 255, 255, 0.2);
+    &:hover{
+        &:before{
+          width: $line-height-hover;
+        }
+        
+        &:after{
+          width: $line-height-hover;
+        }
+    }
+      
+      &:before{
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 0;
+        height: 1px;
+        border-left: $line-height solid currentColor;
+        border-right: $line-height solid currentColor;
+        -webkit-transform: translate3d(-50%,-50%,0) rotate(-45deg);
+        transition: $line-transition;
+      }
+      
+      &:after{
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 0;
+        height: 1px;
+        border-left: $line-height solid currentColor;
+        border-right: $line-height solid currentColor;
+        -webkit-transform: translate3d(-50%,-50%,0) rotate(45deg);
+        transition: $line-transition;
+      }
 }
 
 /* Controls Section */
