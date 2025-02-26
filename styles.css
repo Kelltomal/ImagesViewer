@@ -117,14 +117,12 @@ h1 {
 }
 
 .image-counter {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    background: rgba(0,0,0,0.7);
+    order: 2; /* Счетчик всегда снизу */
+    background: rgba(0, 0, 0, 0.7);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
     color: white;
-    padding: 0.6rem 1.2rem;
-    font-size: 0.9rem;
-    border-radius: 4px 0 0 0;
 }
 
 /* Metro Modal System */
@@ -265,18 +263,23 @@ h1 {
 }
 
 .modal-close-btn {
-    color: white;
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    padding: 0;
-    line-height: 1;
-    transition: transform 0.2s;
+    order: 1; /* Кнопка всегда сверху */
+    background: rgba(0, 0, 0, 0.7);
+    padding: 8px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+    transition: all 0.3s;
 }
 
+/* Анимации для лучшей видимости */
 .modal-close-btn:hover {
-    transform: scale(1.2);
+    transform: scale(1.15) rotate(90deg);
+    background: rgba(255, 255, 255, 0.2);
 }
 
 /* Controls Section */
