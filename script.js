@@ -75,3 +75,30 @@ window.addEventListener('click', (e) => {
         document.getElementById('image-modal').style.display = 'none';
     }
 });
+
+// Windows 8-style Settings Panel
+document.getElementById('settings-btn').addEventListener('click', () => {
+    document.getElementById('settings-panel').classList.toggle('active');
+});
+
+// Metro-style Swipe Detection
+let touchStartX = 0;
+let touchEndX = 0;
+
+document.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+});
+
+document.addEventListener('touchend', e => {
+    touchEndX = e.changedTouches[0].screenX;
+    if (Math.abs(touchEndX - touchStartX) > 50) {
+        if (touchEndX < touchStartX) showImage(state.currentImageIndex + 1);
+        else showImage(state.currentImageIndex - 1);
+    }
+});
+
+// Keyboard Navigation
+document.addEventListener('keydown', (e) => {
+    if(e.key === 'ArrowLeft') showImage(state.currentImageIndex - 1);
+    if(e.key === 'ArrowRight') showImage(state.currentImageIndex + 1);
+});
