@@ -3,64 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gallery Viewer</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Image Gallery Viewer</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- Header Section -->
     <header>
         <h1>Галерея товаров</h1>
         <div class="tooltip">ℹ️
-            <span class="tooltiptext">Функционал: Листание фото, настройки, обмен ссылками</span>
+            <span class="tooltiptext">Просмотр фотографий товаров с возможностью настройки и совместного использования</span>
         </div>
     </header>
 
     <!-- Product Info -->
     <section id="product-info"></section>
 
-    <!-- Gallery -->
-    <section id="gallery-container"></section>
+    <!-- Gallery Grid -->
+    <main id="gallery"></main>
 
-    <!-- Модальное окно -->
+    <!-- Image Modal -->
     <div id="image-modal" class="modal">
-    <div class="modal-content">
-        <button class="nav-btn prev mif-chevron-left"></button>
-        <img class="modal-img" id="modal-image">
-        <button class="nav-btn next mif-chevron-right"></button>
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modal-image">
+        <div class="modal-nav">
+            <button id="prev">&#10094;</button>
+            <button id="next">&#10095;</button>
+        </div>
     </div>
-    <div class="modal-footer">
-        <span class="image-counter" id="modal-counter"></span>
-        <button class="metro-button" onclick="closeModal()">
-            <span class="mif-cross"></span>
-        </button>
-    </div>
-</div>
-
-    <!-- Управление -->
-<section class="controls-panel">
-    <textarea class="metro-input" id="imageUrls" 
-              placeholder="URL изображений через запятую или с новой строки"></textarea>
-    <div class="button-group">
-        <button class="metro-button primary" onclick="updateGallery()">
-            <span class="mif-update"></span> Обновить
-        </button>
-        <button class="metro-button success" onclick="copyUrl()">
-            <span class="mif-share"></span> Поделиться
-        </button>
-    </div>
-</section>
 
     <!-- Settings Panel -->
-    <div id="settings-panel" class="panel">
-        <div id="image-list"></div>
-        <input type="text" id="new-image-url" placeholder="Добавить URL изображения">
-        <button id="add-image">+</button>
+    <div id="settings-panel">
+        <button id="settings-btn">⚙️</button>
+        <div class="settings-content">
+            <div id="image-order"></div>
+            <div class="add-image">
+                <input type="text" id="new-image-url" placeholder="Введите URL изображения">
+                <button id="add-image">+</button>
+            </div>
+        </div>
     </div>
 
     <!-- Footer -->
     <footer>
-        <p>Сайт создал Племянников Д.В (Kelltomal) для личного использования. 
-           Запрещено коммерческое использование.</p>
+        <p>Сайт создал Kelltomal Племянников Д.В для использования в личных нуждах. Не разрешено использовать в коммерческих целях.</p>
     </footer>
 
     <script src="script.js"></script>
