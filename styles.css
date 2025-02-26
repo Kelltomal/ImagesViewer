@@ -187,3 +187,60 @@ footer p {
         right: 1rem;
     }
 }
+
+/* Metro UI Controls */
+.metro-input {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid var(--primary-color);
+    border-radius: 4px;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 1rem 0;
+    resize: vertical;
+}
+
+.button-group {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.metro-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.metro-button.primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.metro-button.success {
+    background: #4CAF50;
+    color: white;
+}
+
+/* Modal Enhancements */
+.modal-footer {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(255,255,255,0.9);
+    padding: 1rem;
+    border-radius: 4px;
+}
+
+.modal-img {
+    max-height: 70vh;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    border: 2px solid white;
+}
