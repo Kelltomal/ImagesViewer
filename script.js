@@ -87,7 +87,7 @@ function renderGallery() {
             `;
         })
         .join('');
-
+    
     addGalleryEventListeners();
 }
 
@@ -113,6 +113,8 @@ function handleImageError(img) {
 
 function renderSettingsPanel() {
     dom.imageUrls.value = state.images.join('\n');
+    dom.artInput.value = state.art;
+    dom.nameInput.value = state.name;
 }
 
 // Modal Control
