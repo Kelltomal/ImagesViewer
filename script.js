@@ -62,7 +62,7 @@ function validateImageUrl(url) {
 function renderGallery() {
     dom.galleryContainer.innerHTML = state.images
         .map((url, index) => {
-            if (!isValidUrl(url)) {
+            if (!validateImageUrl(url)) {
                 console.warn('Пропущен некорректный URL:', url);
                 return '';
             }
