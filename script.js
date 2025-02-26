@@ -1,83 +1,170 @@
-// Initialization
-let images = [];
-let currentImageIndex = 0;
-let isSettingsOpen = false;
+// State Management
+const state = {
+    images: [],
+    currentIndex: 0,
+    name: '',
+    art: '',
+    isEditing: false
+};
 
 // DOM Elements
-const gallery = document.getElementById('gallery');
-const productInfo = document.getElementById('product-info');
-const settingsPanel = document.getElementById('settings-panel');
-const imageOrder = document.getElementById('image-order');
+const dom = {
+    galleryContainer: document.getElementById('gallery-container'),
+    productInfo: document.getElementById('product-info'),
+    imageUrls: document.getElementById('imageUrls'),
+    modal: document.getElementById('image-modal'),
+    modalImage: document.getElementById('modal-image'),
+    modalCounter: document.getElementById('modal-counter'),
+    settingsPanel: document.getElementById('settings-panel')
+};
 
-// URL Parameters Handling
-function getUrlParams() {
+// Initialization
+function init() {
+    parseUrlParams();
+    setupEventListeners();
+    renderAll();
+}
+
+function parseUrlParams() {
     const params = new URLSearchParams(window.location.search);
-    return {
-        images: params.get('images')?.split(',') || [],
-        name: params.get('name'),
-        art: params.get('art')
-    };
+    state.images = params.get('images')?.split(',')
+        .map(url => url.trim())
+        .filter(url => url) || [];
+    state.name = params.get('name') || '';
+    state.art = params.get('art') || '';
 }
 
-// Gallery Rendering
-function renderGallery() {
-    gallery.innerHTML = '';
-    images.forEach((img, index) => {
-        const item = document.createElement('div');
-        item.className = 'gallery-item';
-        item.innerHTML = `
-            <img src="${img}" alt="Image ${index + 1}">
-            <div class="image-counter">${index + 1}/${images.length}</div>
-        `;
-        item.addEventListener('click', () => openModal(index));
-        gallery.appendChild(item);
-    });
-}
-
-// Modal Controls
-function openModal(index) {
-    currentImageIndex = index;
-    const modal = document.getElementById('image-modal');
-    const modalImg = document.getElementById('modal-image');
-    modal.style.display = 'block';
-    modalImg.src = images[index];
-}
-
-// Event Listeners
-window.addEventListener('DOMContentLoaded', () => {
-    const { images: urlImages, name, art } = getUrlParams();
-    images = urlImages;
-    
-    // Render product info
-    let infoHTML = '';
-    if (art) infoHTML += `<h2>Артикул: ${art}</h2>`;
-    if (name) infoHTML += `<h3>Название: ${name}</h3>`;
-    productInfo.innerHTML = infoHTML;
-
+// Rendering
+function renderAll() {
+    renderHeader();
     renderGallery();
-});
+    renderSettingsPanel();
+}
 
-// Close modal when clicking outside
-document.querySelector('.modal').addEventListener('click', (e) => {
-    if (e.target === document.querySelector('.modal')) {
-        document.querySelector('.modal').style.display = 'none';
-    }
-});
+function renderHeader() {
+    dom.productInfo.textContent = [state.art, state.name]
+        .filter(Boolean).join(' - ');
+}
 
-// Navigation Controls
-document.getElementById('prev').addEventListener('click', () => navigate(-1));
-document.getElementById('next').addEventListener('click', () => navigate(1));
+function renderGallery() {
+    dom.galleryContainer.innerHTML = state.images
+        .map((url, index) => `
+            <div class="tile" data-index="${index}">
+                <img src="${url}" 
+                     class="gallery-img" 
+                     loading="lazy"
+                     alt="Изображение ${index + 1}">
+                <div class="image-counter">
+                    ${index + 1}/${state.images.length}
+                </div>
+            </div>
+        `).join('');
+}
+
+function renderSettingsPanel() {
+    dom.imageUrls.value = state.images.join('\n');
+}
+
+// Modal Control
+function openModal(index) {
+    state.currentIndex = index;
+    dom.modal.style.display = 'flex';
+    updateModal();
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    dom.modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+function updateModal() {
+    dom.modalImage.src = state.images[state.currentIndex];
+    dom.modalCounter.textContent = 
+        `${state.currentIndex + 1}/${state.images.length}`;
+}
+
+// Gallery Actions
+function updateGallery() {
+    state.images = dom.imageUrls.value
+        .split(/[,\n]/)
+        .map(url => url.trim())
+        .filter(url => url);
+    updateUrl();
+    renderAll();
+}
+
+function updateUrl() {
+    const params = new URLSearchParams();
+    if (state.images.length) params.set('images', state.images.join(','));
+    if (state.name) params.set('name', state.name);
+    if (state.art) params.set('art', state.art);
+    
+    window.history.replaceState(null, '', `?${params.toString()}`);
+}
+
+// Event Handlers
+function setupEventListeners() {
+    // Gallery clicks
+    dom.galleryContainer.addEventListener('click', e => {
+        const tile = e.target.closest('.tile');
+        if (tile) openModal(parseInt(tile.dataset.index));
+    });
+
+    // Modal navigation
+    dom.modal.addEventListener('click', e => {
+        if (e.target === dom.modal) closeModal();
+    });
+    
+    document.addEventListener('keydown', e => {
+        if (dom.modal.style.display === 'flex') {
+            if (e.key === 'ArrowLeft') navigate(-1);
+            if (e.key === 'ArrowRight') navigate(1);
+            if (e.key === 'Escape') closeModal();
+        }
+    });
+
+    // Swipe detection
+    let touchStartX = 0;
+    document.addEventListener('touchstart', e => {
+        touchStartX = e.touches[0].clientX;
+    });
+    
+    document.addEventListener('touchend', e => {
+        const touchEndX = e.changedTouches[0].clientX;
+        const diff = touchStartX - touchEndX;
+        if (Math.abs(diff) > 50) navigate(diff > 0 ? 1 : -1);
+    });
+
+    // Settings panel
+    document.getElementById('settings-btn').addEventListener('click', () => {
+        dom.settingsPanel.classList.toggle('active');
+    });
+
+    // Share button
+    document.getElementById('share-btn').addEventListener('click', copyUrl);
+}
 
 function navigate(direction) {
-    currentImageIndex = (currentImageIndex + direction + images.length) % images.length;
-    document.getElementById('modal-image').src = images[currentImageIndex];
+    state.currentIndex = (state.currentIndex + direction + state.images.length) % state.images.length;
+    updateModal();
 }
 
-// Keyboard Navigation
-document.addEventListener('keydown', (e) => {
-    if (document.querySelector('.modal').style.display === 'block') {
-        if (e.key === 'ArrowLeft') navigate(-1);
-        if (e.key === 'ArrowRight') navigate(1);
-        if (e.key === 'Escape') document.querySelector('.modal').style.display = 'none';
-    }
-});
+// Share Functionality
+function copyUrl() {
+    navigator.clipboard.writeText(window.location.href)
+        .then(() => showToast('Ссылка скопирована!'))
+        .catch(() => showToast('Ошибка копирования'));
+}
+
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => toast.remove(), 2000);
+}
+
+// Start Application
+document.addEventListener('DOMContentLoaded', init);
