@@ -15,6 +15,7 @@ const dom = {
     modal: document.getElementById('image-modal'),
     modalImage: document.getElementById('modal-image'),
     modalCounter: document.getElementById('modal-counter'),
+    modalContent: document.getElementById('modal-content'),
     settingsPanel: document.getElementById('settings-panel'),
     settingsBtn: document.getElementById('settings-btn'),
     shareBtn: document.getElementById('share-btn')
@@ -136,6 +137,7 @@ function closeModal() {
 
 function updateModal() {
     const currentImage = state.images[state.currentIndex];
+    dom.modal.classList.remove('zoomed');
     
     if (!currentImage) {
         console.error('Текущее изображение не найдено');
@@ -191,7 +193,10 @@ function setupEventListeners() {
     // Модальное окно
     if (dom.modal) {
         dom.modal.addEventListener('click', e => {
-            if (e.target === dom.modal) closeModal();
+            if (e.target === dom.modal) {
+                dom.modal.classList.remove('zoomed');
+                closeModal();
+            }
         });
     }
     
@@ -234,7 +239,7 @@ function setupEventListeners() {
 
 function navigate(direction) {
     const newIndex = state.currentIndex + direction;
-    
+    dom.modal.classList.remove('zoomed');
     // Проверка границ
     if (newIndex < 0 || newIndex >= state.images.length) return;
     
