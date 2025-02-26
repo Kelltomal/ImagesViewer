@@ -1,0 +1,2 @@
+/*
+  Permissions-Policy: geolocation=(), midi=(), camera=(), usb=(), magnetometer=(), accelerometer=(), gyroscope=(), fullscreen=(self)
