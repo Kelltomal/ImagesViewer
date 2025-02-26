@@ -142,18 +142,23 @@ h1 {
 }
 
 .modal-content {
-    position: relative;
-    max-width: 90%;
-    max-height: 90vh;
-    margin: 2% auto;
+    max-width: 95%;
+    max-height: 95vh;
+    width: auto;
+    height: auto;
+    margin: 2vh auto;
 }
 
+/* Улучшенный зум при клике */
 .modal-img {
-    max-width: 100%;
-    max-height: 80vh;
-    object-fit: contain;
-    border-radius: 4px;
-    box-shadow: 0 0 40px rgba(0,0,0,0.3);
+    cursor: zoom-in;
+    transition: transform 0.3s;
+}
+
+.modal-img.zoomed {
+    cursor: zoom-out;
+    transform: scale(1.5);
+    transform-origin: center center;
 }
 
 /* Стили для битых изображений */
@@ -424,5 +429,14 @@ footer p {
     #product-info {
         margin: 1rem;
         font-size: 1.1rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    .modal-content {
+        max-width: 1200px;
+    }
+    .modal-img {
+        max-height: 90vh;
     }
 }
