@@ -273,7 +273,7 @@ h1 {
     background: rgba(0, 0, 0, 0.7);
     padding: 8px;
     border-radius: 50%;
-    border-width: 0px;
+    border: none;
     width: 40px;
     height: 40px;
     display: flex;
@@ -281,6 +281,10 @@ h1 {
     justify-content: center;
     backdrop-filter: blur(4px);
     transition: all 0.3s;
+}
+
+.modal-close-btn:hover {
+    background: var(--primary-color);
 }
 
 /* Controls Section */
@@ -305,7 +309,7 @@ h1 {
 
 .metro-input:focus {
     outline: none;
-    border-color: var(--dark-accent);
+    border-color: var(--light-accent);
 }
 
 .button-group {
