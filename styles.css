@@ -1,6 +1,7 @@
 /* Windows 8 Modern UI Theme */
 :root {
     --primary-color: #0078D7;
+    --darkprimary-color: #004a84;
     --dark-accent: #005A9E;
     --light-accent: #EFF6FC;
     --text-color: #1F1F1F;
@@ -225,7 +226,7 @@ h1 {
 }
 
 .nav-btn:hover {
-    background: white;
+    background: var(--darkprimary-color);
     transform: translateY(-50%) scale(1.1);
 }
 
@@ -284,7 +285,7 @@ h1 {
 }
 
 .modal-close-btn:hover {
-    background: var(--light-accent);
+    background: var(--darkprimary-color);
 }
 
 /* Controls Section */
