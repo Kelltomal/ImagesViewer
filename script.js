@@ -18,7 +18,9 @@ const dom = {
     modalContent: document.getElementById('modal-content'),
     settingsPanel: document.getElementById('settings-panel'),
     settingsBtn: document.getElementById('settings-btn'),
-    shareBtn: document.getElementById('share-btn')
+    shareBtn: document.getElementById('share-btn'),
+    artInput: document.getElementById('art-input'),
+    nameInput: document.getElementById('name-input'),
 };
 
 // Initialization
@@ -168,6 +170,7 @@ function updateGallery() {
         .split(/[,\n]/)
         .map(url => url.trim())
         .filter(url => url);
+    state.name = dom.
     updateUrl();
     renderAll();
 }
