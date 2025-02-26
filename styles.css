@@ -149,8 +149,9 @@ h1 {
 
 .image-wrapper {
     position: relative;
-    overflow: visible;
-    margin: 0 50px;
+    max-width: 100%;
+    margin: 0;
+    padding: 0 40px; /* Оставляем место для кнопок */
 }
 
 @keyframes modalScale {
@@ -206,21 +207,21 @@ h1 {
 }
 
 .nav-btn {
-    position: fixed;
+    position: absolute;
     top: 50%;
     transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
     background: var(--primary-color);
     border: none;
-    width: 50px;
-    height: 50px;
     border-radius: 50%;
     cursor: pointer;
-    font-size: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     transition: all 0.3s;
+    z-index: 1001;
 }
 
 .nav-btn:hover {
@@ -237,8 +238,13 @@ h1 {
     mask-size: contain;
 }
 
-.prev { left: 2%; }
-.next { right: 2%; }
+.prev {
+    left: 5px;
+}
+
+.next {
+    right: 5px;
+}
 
 .prev::before {
     mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg>');
@@ -434,13 +440,17 @@ footer p {
     }
 
     .nav-btn {
-        width: 40px;
-        height: 40px;
+        width: 35px;
+        height: 35px;
     }
 
     .controls-panel {
         margin: 1rem;
         padding: 1.5rem;
+    }
+    
+    .image-wrapper {
+        padding: 0 30px;
     }
 
     #settings-panel {
