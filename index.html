@@ -21,19 +21,34 @@
     <!-- Gallery -->
     <section id="gallery-container"></section>
 
-    <!-- Modal -->
+    <!-- Модальное окно -->
     <div id="image-modal" class="modal">
-        <span class="close">&times;</span>
-        <img class="modal-content" id="modal-image">
-        <button class="nav-btn prev">←</button>
-        <button class="nav-btn next">→</button>
+    <div class="modal-content">
+        <button class="nav-btn prev mif-chevron-left"></button>
+        <img class="modal-img" id="modal-image">
+        <button class="nav-btn next mif-chevron-right"></button>
     </div>
+    <div class="modal-footer">
+        <span class="image-counter" id="modal-counter"></span>
+        <button class="metro-button" onclick="closeModal()">
+            <span class="mif-cross"></span>
+        </button>
+    </div>
+</div>
 
-    <!-- Controls -->
-    <div class="controls">
-        <button id="settings-btn">⚙️</button>
-        <button id="share-btn">🔗</button>
+    <!-- Управление -->
+<section class="controls-panel">
+    <textarea class="metro-input" id="imageUrls" 
+              placeholder="URL изображений через запятую или с новой строки"></textarea>
+    <div class="button-group">
+        <button class="metro-button primary" onclick="updateGallery()">
+            <span class="mif-update"></span> Обновить
+        </button>
+        <button class="metro-button success" onclick="copyUrl()">
+            <span class="mif-share"></span> Поделиться
+        </button>
     </div>
+</section>
 
     <!-- Settings Panel -->
     <div id="settings-panel" class="panel">
