@@ -46,19 +46,63 @@ function renderHeader() {
         .filter(Boolean).join(' - ');
 }
 
+// Добавим проверку URL изображений
+function validateImageUrl(url) {
+    try {
+        new URL(url); // Проверяем валидность URL
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+// Обновленная функция рендеринга галереи
 function renderGallery() {
-    dom.galleryContainer.innerHTML = state.images
-        .map((url, index) => `
-            <div class="tile" data-index="${index}">
-                <img src="${url}" 
-                     class="gallery-img" 
-                     loading="lazy"
-                     alt="Изображение ${index + 1}">
-                <div class="image-counter">
-                    ${index + 1}/${state.images.length}
-                </div>
-            </div>
-        `).join('');
+    const container = dom.galleryContainer;
+    
+    // Очищаем контейнер
+    container.innerHTML = '';
+    
+    // Добавляем проверку на пустой список
+    if (!state.images || state.images.length === 0) {
+        container.innerHTML = `<div class="empty-state">Нет изображений для отображения</div>`;
+        return;
+    }
+
+    // Создаем элементы галереи
+    state.images.forEach((url, index) => {
+        if (!validateImageUrl(url)) {
+            console.error(`Некорректный URL изображения: ${url}`);
+            return;
+        }
+
+        const tile = document.createElement('div');
+        tile.className = 'tile';
+        tile.innerHTML = `
+            <img src="${url}" 
+                 class="gallery-img" 
+                 loading="lazy" 
+                 alt="Изображение ${index + 1}"
+                 onerror="this.onerror=null;this.src='https://via.placeholder.com/300x200?text=Ошибка+загрузки';">
+            <div class="image-counter">${index + 1}/${state.images.length}</div>
+        `;
+
+        container.appendChild(tile);
+    });
+
+    // Добавляем обработчики после рендеринга
+    addGalleryEventListeners();
+}
+
+// Добавим отдельную функцию для обработчиков событий
+function addGalleryEventListeners() {
+    document.querySelectorAll('.gallery-img').forEach(img => {
+        img.addEventListener('click', function() {
+            const index = Array.from(this.parentNode.parentNode.children)
+                .indexOf(this.parentNode);
+            openModal(index);
+        });
+    });
 }
 
 function renderSettingsPanel() {
