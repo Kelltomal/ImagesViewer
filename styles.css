@@ -268,6 +268,11 @@ h1 {
     backdrop-filter: blur(4px);
 }
 
+$line-height: 8px;
+$line-height-hover: 15px;
+$line-color: #a1905d;
+$line-transition: all .2s cubic-bezier(.25,.46,.45,.94);
+
 .modal-close-btn {
     order: 1; /* Кнопка всегда сверху */
     background: rgba(0, 0, 0, 0.7);
