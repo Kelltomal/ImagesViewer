@@ -15,7 +15,9 @@ const dom = {
     modal: document.getElementById('image-modal'),
     modalImage: document.getElementById('modal-image'),
     modalCounter: document.getElementById('modal-counter'),
-    settingsPanel: document.getElementById('settings-panel')
+    settingsPanel: document.getElementById('settings-panel'),
+    settingsBtn: document.getElementById('settings-btn'),
+    shareBtn: document.getElementById('share-btn')
 };
 
 // Initialization
@@ -149,16 +151,20 @@ function updateUrl() {
 
 // Event Handlers
 function setupEventListeners() {
-    // Gallery clicks
-    dom.galleryContainer.addEventListener('click', e => {
-        const tile = e.target.closest('.tile');
-        if (tile) openModal(parseInt(tile.dataset.index));
-    });
+    // Галерея
+    if (dom.galleryContainer) {
+        dom.galleryContainer.addEventListener('click', e => {
+            const tile = e.target.closest('.tile');
+            if (tile) openModal(parseInt(tile.dataset.index));
+        });
+    }
 
-    // Modal navigation
-    dom.modal.addEventListener('click', e => {
-        if (e.target === dom.modal) closeModal();
-    });
+    // Модальное окно
+    if (dom.modal) {
+        dom.modal.addEventListener('click', e => {
+            if (e.target === dom.modal) closeModal();
+        });
+    }
     
     document.addEventListener('keydown', e => {
         if (dom.modal.style.display === 'flex') {
@@ -180,13 +186,16 @@ function setupEventListeners() {
         if (Math.abs(diff) > 50) navigate(diff > 0 ? 1 : -1);
     });
 
-    // Settings panel
-    document.getElementById('settings-btn').addEventListener('click', () => {
-        dom.settingsPanel.classList.toggle('active');
-    });
-
-    // Share button
-    document.getElementById('share-btn').addEventListener('click', copyUrl);
+    // Панель настроек
+    if (dom.settingsBtn) {
+        dom.settingsBtn.addEventListener('click', () => {
+            dom.settingsPanel?.classList.toggle('active');
+        });
+    }
+    // Кнопка поделиться
+    if (dom.shareBtn) {
+        dom.shareBtn.addEventListener('click', copyUrl);
+    }
 }
 
 function navigate(direction) {
@@ -210,5 +219,11 @@ function showToast(message) {
     setTimeout(() => toast.remove(), 2000);
 }
 
-// Start Application
-document.addEventListener('DOMContentLoaded', init);
+// Инициализация с проверкой
+document.addEventListener('DOMContentLoaded', () => {
+    if (!document.getElementById('gallery-container')) {
+        console.error('Основной контейнер галереи не найден!');
+        return;
+    }
+    init();
+});
