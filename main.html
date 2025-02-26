@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+const images = urlParams.get('images')?.split(',') || [];
+document.body.innerHTML = images.map(url => 
+  `<img src="${url.trim()}" style="max-width: 300px; margin: 10px;">`).join('');
+</script>
+</body>
+</html>
