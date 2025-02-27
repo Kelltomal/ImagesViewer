@@ -412,6 +412,58 @@ footer p {
     grid-column: 1 / -1;
 }
 
+/* Стили для тултипов */
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.tooltip {
+    visibility: hidden;
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+    text-align: center;
+    padding: 8px 12px;
+    border-radius: 4px;
+    position: absolute;
+    z-index: 1000;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 14px;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.85) transparent transparent transparent;
+}
+
+.tooltip-container:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+    .tooltip {
+        white-space: normal;
+        width: 200px;
+        left: 0;
+        transform: none;
+    }
+}
+
 /* Animations */
 @keyframes slideIn {
     from { transform: translateY(20px); opacity: 0; }
