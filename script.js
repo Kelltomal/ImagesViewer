@@ -284,6 +284,36 @@ function showToast(message) {
 }
 
 // Функция архивации
+function generateArchiveName() {
+    const date = new Date();
+    const timestamp = date.getTime(); // Миллисекунды для уникальности
+    
+    // Функция очистки с раздельными лимитами
+    const cleanString = (str, maxLength = 30) => 
+        str.replace(/[^a-zA-Z0-9а-яА-ЯёЁ_\-]/g, '_') // Замена спецсимволов
+           .replace(/[\u0300-\u036f]/g, '')          // Удаляем диакритические знаки
+           .replace(/_+/g, '_')                      // Удаление дублирующих _
+           .replace(/^_|_$/g, '')                    // Удаление _ в начале/конце
+           .trim();
+           .slice(0, maxLength) || 'images';         // Дефолтное значение\ Индивидуальный лимит для каждой части 
+    
+    // Обрабатываем артикул и название отдельно
+    const artPart = cleanPart(state.art, 30); // Лимит 30 символов для артикула
+    const namePart = cleanPart(state.name, 50); // Лимит 50 символов для названия
+    
+    // Формируем компоненты имени
+    const parts = [artPart, namePart].filter(Boolean);
+    const datePart = date.toISOString()
+        .replace(/[:.]/g, '-')
+        .replace('T', '_')
+        .slice(0, 19); // 2024-04-05_15-30-00
+
+    // Собираем финальное имя
+    return parts.length > 0 
+        ? `Архив_${parts.join('_')}_${datePart}_${timestamp}.zip`
+        : `Архив_${timestamp}.zip`;
+}
+
 async function downloadAllImages() {
     if (!state.images.length) {
         showToast('Нет изображений для скачивания');
@@ -311,8 +341,10 @@ async function downloadAllImages() {
 
         if (loadedCount === 0) throw new Error('Не удалось загрузить изображения');
 
+        
         const content = await zip.generateAsync({ type: "blob" });
-        saveAs(content, "images_archive.zip");
+        const filename = generateArchiveName();
+        saveAs(content, filename);
     } catch (error) {
         showToast('Ошибка создания архива');
         console.error('Archive error:', error);
