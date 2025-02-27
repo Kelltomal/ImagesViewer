@@ -40,16 +40,22 @@
     <!-- Controls Panel -->
     <section class="controls-panel">
         <div class="product-fields">
-            <input type="text" 
-                   class="metro-input" 
-                   id="art-input" 
-                   placeholder="Артикул"
-                   value="">
-            <input type="text" 
-                   class="metro-input" 
-                   id="name-input" 
-                   placeholder="Название товара"
-                   value="">
+            <div class="tooltip-container">
+                <input type="text" 
+                       class="metro-input" 
+                       id="art-input" 
+                       placeholder="Артикул"
+                       value="">
+                <span class="tooltip">Артикул товара</span>
+            </div>
+            <div class="tooltip-container">
+                <input type="text" 
+                       class="metro-input" 
+                       id="name-input" 
+                       placeholder="Название товара"
+                       value="">
+                <span class="tooltip">Название товара</span>
+            </div>
         </div>
         <textarea class="metro-input" id="imageUrls" 
                   placeholder="Введите URL изображений через запятую или каждое с новой строки"></textarea>
