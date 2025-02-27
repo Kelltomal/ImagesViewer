@@ -289,7 +289,8 @@ function generateArchiveName() {
     const timestamp = date.getTime(); // Миллисекунды для уникальности
     
     // Функция очистки с раздельными лимитами
-    const cleanString = (str, maxLength = 30) => 
+    const cleanPart = (str, maxLength = 30) => {
+        if (!str || typeof str !== 'string') return '';
         str.replace(/[^a-zA-Z0-9а-яА-ЯёЁ_\-]/g, '_') // Замена спецсимволов
            .replace(/[\u0300-\u036f]/g, '')          // Удаляем диакритические знаки
            .replace(/_+/g, '_')                      // Удаление дублирующих _
