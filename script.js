@@ -21,8 +21,6 @@ const dom = {
     shareBtn: document.getElementById('share-btn'),
     artInput: document.getElementById('art-input'),
     nameInput: document.getElementById('name-input'),
-    toggleSettings: document.getElementById('toggle-settings'),
-    controlsPanel: document.getElementById('controls-panel')
 };
 
 // Initialization
@@ -284,24 +282,6 @@ function showToast(message) {
     setTimeout(() => toast.remove(), 2000);
 }
 
-// Обработчик клика
-dom.toggleSettings.addEventListener('click', () => {
-    dom.controlsPanel.classList.toggle('hidden');
-    dom.toggleSettings.classList.toggle('active');
-    
-    // Дополнительно: сохраняем состояние
-    localStorage.setItem('panelVisible', 
-        !dom.controlsPanel.classList.contains('hidden'));
-});
-
-// Восстановление состояния только если элементы существуют
-document.addEventListener('DOMContentLoaded', () => {
-    if (dom.toggleSettings && dom.controlsPanel) {
-        const isVisible = localStorage.getItem('panelVisible') !== 'false';
-        dom.controlsPanel.classList.toggle('hidden', !isVisible);
-        dom.toggleSettings.classList.toggle('active', isVisible);
-    }
-});
 // Инициализация с проверкой
 document.addEventListener('DOMContentLoaded', () => {
     if (!document.getElementById('gallery-container')) {
