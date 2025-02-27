@@ -471,6 +471,17 @@ footer p {
         left: 0;
         transform: none;
     }
+    .controls-panel {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+    }
+    
+    .controls-panel.hidden {
+        transform: translateY(-100vh);
+    }
 }
 
 /* Animations */
