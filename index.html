@@ -76,7 +76,10 @@
                 🔄 Обновить
             </button>
             <button class="metro-button success" onclick="copyUrl()">
-                📤 Поделиться
+                🛸 Поделиться
+            </button>
+            <button class="metro-button primary" id="download-all">
+                📥 Скачать архив
             </button>
         </div>
     </section>
@@ -101,6 +104,8 @@
         Запрещено копирование и распространение без разрешения.</p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
