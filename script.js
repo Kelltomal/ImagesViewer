@@ -21,6 +21,7 @@ const dom = {
     shareBtn: document.getElementById('share-btn'),
     artInput: document.getElementById('art-input'),
     nameInput: document.getElementById('name-input'),
+    downloadAllBtn: document.getElementById('download-all'),
 };
 
 // Initialization
@@ -280,6 +281,49 @@ function showToast(message) {
     document.body.appendChild(toast);
     
     setTimeout(() => toast.remove(), 2000);
+}
+
+// Функция архивации
+async function downloadAllImages() {
+    if (!state.images.length) {
+        showToast('Нет изображений для скачивания');
+        return;
+    }
+
+    const zip = new JSZip();
+    const imgFolder = zip.folder("images");
+    let loadedCount = 0;
+    
+    dom.downloadAllBtn.classList.add('loading');
+    
+    try {
+        for (const [index, url] of state.images.entries()) {
+            try {
+                const response = await fetch(url);
+                const blob = await response.blob();
+                const filename = `image-${index + 1}.${blob.type.split('/')[1] || 'jpg'}`;
+                imgFolder.file(filename, blob);
+                loadedCount++;
+            } catch (error) {
+                console.error(`Ошибка загрузки ${url}:`, error);
+            }
+        }
+
+        if (loadedCount === 0) throw new Error('Не удалось загрузить изображения');
+
+        const content = await zip.generateAsync({ type: "blob" });
+        saveAs(content, "images_archive.zip");
+    } catch (error) {
+        showToast('Ошибка создания архива');
+        console.error('Archive error:', error);
+    } finally {
+        dom.downloadAllBtn.classList.remove('loading');
+    }
+}
+
+// Добавьте обработчик
+if (dom.downloadAllBtn) {
+    dom.downloadAllBtn.addEventListener('click', downloadAllImages);
 }
 
 // Инициализация с проверкой
