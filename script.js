@@ -294,14 +294,19 @@ dom.toggleSettings.addEventListener('click', () => {
         !dom.controlsPanel.classList.contains('hidden'));
 });
 
+// Восстановление состояния только если элементы существуют
+document.addEventListener('DOMContentLoaded', () => {
+    if (dom.toggleSettings && dom.controlsPanel) {
+        const isVisible = localStorage.getItem('panelVisible') !== 'false';
+        dom.controlsPanel.classList.toggle('hidden', !isVisible);
+        dom.toggleSettings.classList.toggle('active', isVisible);
+    }
+});
 // Инициализация с проверкой
 document.addEventListener('DOMContentLoaded', () => {
     if (!document.getElementById('gallery-container')) {
         console.error('Основной контейнер галереи не найден!');
         return;
     }
-    const isVisible = localStorage.getItem('panelVisible') !== 'false';
-    dom.controlsPanel.classList.toggle('hidden', !isVisible);
-    dom.toggleSettings.classList.toggle('active', isVisible);
     init();
 });
