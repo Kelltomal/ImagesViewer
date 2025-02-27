@@ -117,6 +117,13 @@ function renderSettingsPanel() {
     dom.nameInput.value = state.name;
 }
 
+document.querySelectorAll('[placeholder]').forEach(element => {
+    const tooltip = document.createElement('span');
+    tooltip.className = 'tooltip';
+    tooltip.textContent = element.dataset.tooltip;
+    element.parentNode.appendChild(tooltip);
+});
+
 // Modal Control
 function openModal(index) {
     // Проверка валидности индекса
