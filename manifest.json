@@ -1,0 +1,14 @@
+{
+    "name": "Галерея товаров",
+    "short_name": "Галерея",
+    "icons": [
+        {
+            "src": "/favicon.ico",
+            "sizes": "16x16",
+            "type": "image/ico"
+        }
+    ],
+    "theme_color": "#202020",
+    "background_color": "#202020",
+    "display": "standalone"
+}
