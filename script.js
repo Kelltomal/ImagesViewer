@@ -307,14 +307,10 @@ function generateArchiveName() {
     
     // Формируем компоненты имени
     const parts = [artPart, namePart].filter(Boolean);
-    const datePart = date.toISOString()
-        .replace(/[:.]/g, '-')
-        .replace('T', '_')
-        .slice(0, 19); // 2024-04-05_15-30-00
 
     // Собираем финальное имя
     return parts.length > 0 
-        ? `Архив_${parts.join('_')}_${datePart}_${timestamp}.zip`
+        ? `Архив_${parts.join('_')}_${timestamp}.zip`
         : `Архив_${timestamp}.zip`;
 }
 
